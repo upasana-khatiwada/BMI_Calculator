@@ -14,3 +14,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+in this project we’re going to make a Body Mass Index Calculator . It will be a multi screen app with simple functionality but full-on custom styling.
