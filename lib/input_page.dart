@@ -14,6 +14,8 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Gender? selectedGender;
+  int height = 180;
+  int weight = 30;
   // Color maleCardColour = inactiveCardColour;
   // Color femaleCardColour = inactiveCardColour;
   // //1= male 2=female
@@ -97,28 +99,75 @@ class _InputPageState extends State<InputPage> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: <Widget>[
                       Text(
-                        '180',
+                        height.toString(),
                         style: kNumberTextStyle,
                       ),
-                      Text('cm',
-                      style: klabelTextStyle,),
+                      const Text(
+                        'cm',
+                        style: klabelTextStyle,
+                      ),
                     ],
-                  )
+                  ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      inactiveTrackColor: const Color(0xFF8D8E98),
+                      activeTrackColor: Colors.white,
+                      thumbColor: const Color(0xFFEB1555),
+                      overlayColor: const Color(0x29EB1555),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                      overlayShape:
+                          const RoundSliderOverlayShape(overlayRadius: 30.0),
+                    ),
+                    child: Slider(
+                        value: height.toDouble(),
+                        min: 120.0,
+                        max: 220.0,
+                        activeColor: const Color(0xFFEB1555),
+                        inactiveColor: const Color(0xFF8D8E98),
+                        onChanged: (double newValue) {
+                          setState(() {
+                            height = newValue.round();
+                          });
+                        }),
+                  ),
                 ],
               ),
             ),
           ),
           Expanded(
             child: Row(
-              children: const <Widget>[
+              children: <Widget>[
                 Expanded(
                   child: ReusableCard(
                     colour: kinactiveCardColour,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          "WEIGHT",
+                          style: klabelTextStyle,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: kNumberTextStyle,
+                        ),
+                        const RoundIconButton(icon:FontAwesomeIcons.minus,
+                       ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                       const RoundIconButton(icon:FontAwesomeIcons.plus,
+                       ),
+                      ],
+                    ),
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: ReusableCard(
                     colour: kinactiveCardColour,
                   ),
@@ -134,6 +183,35 @@ class _InputPageState extends State<InputPage> {
           )
         ],
       ),
+    );
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  
+
+  
+  //const RoundIconButton({super.key});
+
+    const RoundIconButton({Key? key, required this.icon})
+    : super(key: key);
+
+    final IconData icon;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      
+      shape: const CircleBorder(),
+      fillColor: const Color(0xFF4C4F5E),
+      //The elevation of a component is the distance from the underneath surface. Visually, the elevation results in shadows.
+      elevation: 6.0,
+      //since the size of the button by defult is small than what we require we can mention the size of the box manually 
+      constraints: const BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
+      ),
+      onPressed: (){},
+      child: Icon(icon),
     );
   }
 }
