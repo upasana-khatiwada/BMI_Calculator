@@ -3,6 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'resuable_card.dart';
 import 'icon_content.dart';
 import 'const.dart';
+import 'results_page.dart';
+import 'calculator_brain.dart';
+import 'bottom_button.dart';
+import 'round_icon_button.dart';
 
 enum Gender { male, female }
 
@@ -16,6 +20,7 @@ class _InputPageState extends State<InputPage> {
   Gender? selectedGender;
   int height = 180;
   int weight = 30;
+  int age = 20;
   // Color maleCardColour = inactiveCardColour;
   // Color femaleCardColour = inactiveCardColour;
   // //1= male 2=female
@@ -139,6 +144,8 @@ class _InputPageState extends State<InputPage> {
               ),
             ),
           ),
+
+          //Weight
           Expanded(
             child: Row(
               children: <Widget>[
@@ -156,62 +163,98 @@ class _InputPageState extends State<InputPage> {
                           weight.toString(),
                           style: kNumberTextStyle,
                         ),
-                        const RoundIconButton(icon:FontAwesomeIcons.minus,
-                       ),
-                        const SizedBox(
-                          width: 10.0,
-                        ),
-                       const RoundIconButton(icon:FontAwesomeIcons.plus,
-                       ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                }),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  weight++;
+                                });
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: ReusableCard(
                     colour: kinactiveCardColour,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          "Age",
+                          style: klabelTextStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: kNumberTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                }),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPressed: () {
+                                setState(() {
+                                  age++;
+                                });
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            color: kbottomContainerColor,
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kbottomContainerHeight,
-          )
+          BottomButton(buttonTitle: 'Calculate',onTap: () {
+            //here height: height gets height from local variable which is from the slider
+            CalculatorBrain calc = CalculatorBrain(height: height, weight: weight);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>ResultsPage(
+                  bmiResult: calc.calculateBMI(),
+                        resultText: calc.getResult(),
+                        interpretation: calc.getInterpretation(),
+              ),
+          ),
+        );
+      })
         ],
       ),
     );
   }
 }
 
-class RoundIconButton extends StatelessWidget {
-  
 
-  
-  //const RoundIconButton({super.key});
 
-    const RoundIconButton({Key? key, required this.icon})
-    : super(key: key);
 
-    final IconData icon;
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      
-      shape: const CircleBorder(),
-      fillColor: const Color(0xFF4C4F5E),
-      //The elevation of a component is the distance from the underneath surface. Visually, the elevation results in shadows.
-      elevation: 6.0,
-      //since the size of the button by defult is small than what we require we can mention the size of the box manually 
-      constraints: const BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      onPressed: (){},
-      child: Icon(icon),
-    );
-  }
-}
+
